@@ -8,10 +8,11 @@
     </div>
 
     <!-- Login Form -->
-    <form>
-      <input type="text" id="login" class="fadeIn second" name="login" placeholder="login">
-      <input type="text" id="password" class="fadeIn third" name="login" placeholder="password">
-      <input type="submit" class="fadeIn fourth" value="Log In">
+    <form (ngSubmit)="login()" #registerForm="ngForm">
+      <input type="text" id="login" class="fadeIn second" name="login" placeholder="login" [(ngModel)]="registerCredentials.email" required>
+      <input type="password" id="password" class="fadeIn third" name="password" placeholder="password"  [(ngModel)]="registerCredentials.password" required>
+      
+      <button ion-button class="submit-btn  " full type="submit" [disabled]="!registerForm.form.valid">Login</button>
     </form>
     <a class="underlineHover" href="#">Esqueceu a Senha?</a>
    

@@ -1,6 +1,9 @@
+import { HomePage } from './../home/home';
+import { AuthServiceProvider } from './../../providers/auth-service/auth-service';
 import { CadastroPage } from './../cadastro/cadastro';
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
+
 
 /**
  * Generated class for the LoginPage page.
@@ -15,8 +18,9 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
   templateUrl: 'login.html',
 })
 export class LoginPage {
+  registerCredentials = { email: '', password: '' };
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  constructor(public nav: NavController, public navParams: NavParams, private auth: AuthServiceProvider, private alertCtrl: AlertController) {
   }
 
   ionViewDidLoad() {
@@ -24,8 +28,33 @@ export class LoginPage {
   }
 
   pushCadastra(){
-    this.navCtrl.push(CadastroPage)
+    this.nav.push(CadastroPage)
   }
+
+  public login() {
+
+
+    this.auth.login(this.registerCredentials).subscribe(allowed => {
+      if (allowed) {        
+        this.nav.setRoot(HomePage);
+      } else {
+        this.showError("Acesso Negado!");
+      }
+    },
+      error => {
+        this.showError(error);
+      });
+  }
+
+  showError(text) {
+    
  
+    let alert = this.alertCtrl.create({
+      title: 'Fail',
+      subTitle: text,
+      buttons: ['OK']
+    });
+    alert.present(prompt);
+  }
 
 }
